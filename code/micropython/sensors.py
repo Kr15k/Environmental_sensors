@@ -7,8 +7,8 @@ from PiicoDev_ENS160 import PiicoDev_ENS160 # import the device driver
 from PiicoDev_Unified import sleep_ms       # a cross-platform sleep function
 import aht
 
-bme_temp_offset = 3
-aht_temp_offset = 7
+bme_temp_offset = 4
+aht_temp_offset = 8
 
 
 i2c = I2C(0, scl=Pin(17), sda=Pin(16))
