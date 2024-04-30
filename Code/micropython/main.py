@@ -16,6 +16,7 @@ from machine import WDT
 import button
 
 sta_if = connect() # connects to WiFi
+
 naw = Nanoweb() # makes a instance of nanoweb
 
 # defines the data dictionary used to store sensor readings
