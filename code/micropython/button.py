@@ -17,11 +17,13 @@ pwm2.freq(frq)
 lights = True
 
 # defining the data dictionary that will be used to contain sensor readings
+"""
 data = dict(
     bme = dict(temperature=0, humidity=0, pressure=0),
     ens = dict(tvoc=0, eco2=0, rating=''),
     aht = dict(temperature=0, humidity=0),
     )
+"""
 
 # function to set color based on r, g & b values
 def setColor(r, g, b):
@@ -30,7 +32,8 @@ def setColor(r, g, b):
     pwm2.duty_u16(65535 - b)
 
 # changes color of the led based on what the air quality is
-def ratings():
+def ratings(data):
+    
     if data['ens']['rating'] == 'excellent':
         setColor(0, 2000, 0)
     elif data['ens']['rating'] == 'good':
@@ -42,29 +45,28 @@ def ratings():
     elif data['ens']['rating'] == 'bad':
         setColor(3000, 0, 0)
 
-
 # async function for cheecking if the button gets pressed
-async def button_loop():
+async def button_loop(data):
     global lights
     while True:
         if button.value():
             if lights == False:
                 lights = True
-                print("lights = True")
+                #print("lights = True")
                 await uasyncio.sleep_ms(1000)
             elif lights == True:
                 lights = False
-                print("lights = False")
+                #print("lights = False")
                 await uasyncio.sleep_ms(1000)
-            print(data['ens']['rating'])
+            #print(data['ens']['rating'])
         await uasyncio.sleep_ms(100)
 
 # async function changing light on or off depending on a boolean
-async def air_quality_light():
+async def air_quality_light(data):
     global lights
     while True:
         while lights == True:
-            ratings()
+            ratings(data)
             #print("light on")
             #print(data['ens']['rating'])
             await uasyncio.sleep_ms(1000)
@@ -82,6 +84,4 @@ def run():
     loop.create_task(button_loop())
     loop.run_forever()
 
-# runs if called from main
-if __name__ == '__main__':
-    run()
+#run()
