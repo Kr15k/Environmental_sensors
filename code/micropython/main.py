@@ -1,3 +1,4 @@
+# importing libraries and modules
 from time import sleep
 import json
 from wlan import connect
