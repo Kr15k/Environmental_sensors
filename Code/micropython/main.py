@@ -62,7 +62,7 @@ async def wdt_loop():
     wdt = WDT(timeout=8000)
     while True:
         wdt.feed()
-        await uasyncio.sleep_ms(6000)
+        await uasyncio.sleep_ms(1000)
 
 # loops the earlier created async functions
 loop = uasyncio.get_event_loop()
