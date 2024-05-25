@@ -23,6 +23,8 @@ data = dict(
     ens = dict(tvoc=0, eco2=0, rating=''),
     aht = dict(temperature=0, humidity=0),
     )
+import time
+hour = time.localtime()[3]
 """
 
 # function to set color based on r, g & b values
@@ -46,7 +48,7 @@ def ratings(data):
         setColor(3000, 0, 0)
 
 # async function for cheecking if the button gets pressed
-async def button_loop(data):
+async def button_loop(data, hour):
     global lights
     while True:
         if button.value():
@@ -59,6 +61,11 @@ async def button_loop(data):
                 #print("lights = False")
                 await uasyncio.sleep_ms(1000)
             #print(data['ens']['rating'])
+        # turning the light off at 10pm and on at 10am (can still be toggled at all other hours)
+        if hour == 22:
+            lights = False
+        elif hour == 10:
+            lights = True
         await uasyncio.sleep_ms(100)
 
 # async function changing light on or off depending on a boolean
@@ -80,8 +87,8 @@ async def air_quality_light(data):
 def run():
     loop = uasyncio.get_event_loop()
     loop.create_task(sensors.collect_sensors_data(data, False))
-    loop.create_task(air_quality_light())
-    loop.create_task(button_loop())
+    loop.create_task(air_quality_light(data))
+    loop.create_task(button_loop(data, hour))
     loop.run_forever()
 
 #run()
