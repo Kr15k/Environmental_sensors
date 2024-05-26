@@ -6,7 +6,6 @@ import uasyncio
 from nanoweb import Nanoweb
 import urequests
 import gc
-import time
 
 import sensors
 from html_functions import naw_write_http_header, render_template
@@ -26,7 +25,6 @@ data = dict(
     ens = dict(tvoc=0, eco2=0, rating=''),
     aht = dict(temperature=0, humidity=0),
     )
-hour = time.localtime()[3]
 #inputs = dict(button_1=False)
 
 # posts sensors data to nanoweb page
@@ -70,7 +68,7 @@ loop = uasyncio.get_event_loop()
 loop.create_task(sensors.collect_sensors_data(data, False))
 #loop.create_task(buttons.wait_for_buttons(inputs))
 loop.create_task(button.air_quality_light(data))
-loop.create_task(button.button_loop(data, hour))
+loop.create_task(button.button_loop(data))
 loop.create_task(naw.run())
 loop.create_task(control_loop())
 loop.create_task(wdt_loop())

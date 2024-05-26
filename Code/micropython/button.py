@@ -3,6 +3,7 @@ import machine
 from machine import Pin, PWM
 import sensors
 import uasyncio
+import time
 
 # setting pwm led pins, frequency, button pin & lights boolean
 button = machine.Pin(1, machine.Pin.IN, machine.Pin.PULL_DOWN)
@@ -23,8 +24,6 @@ data = dict(
     ens = dict(tvoc=0, eco2=0, rating=''),
     aht = dict(temperature=0, humidity=0),
     )
-import time
-hour = time.localtime()[3]
 """
 
 # function to set color based on r, g & b values
@@ -48,7 +47,7 @@ def ratings(data):
         setColor(3000, 0, 0)
 
 # async function for cheecking if the button gets pressed
-async def button_loop(data, hour):
+async def button_loop(data):
     global lights
     while True:
         if button.value():
@@ -62,6 +61,7 @@ async def button_loop(data, hour):
                 await uasyncio.sleep_ms(1000)
             #print(data['ens']['rating'])
         # turning the light off at 10pm and on at 10am (can still be toggled at all other hours)
+        hour = time.localtime()[3]
         if hour == 22:
             lights = False
         elif hour == 10:
@@ -88,7 +88,7 @@ def run():
     loop = uasyncio.get_event_loop()
     loop.create_task(sensors.collect_sensors_data(data, False))
     loop.create_task(air_quality_light(data))
-    loop.create_task(button_loop(data, hour))
+    loop.create_task(button_loop(data))
     loop.run_forever()
 
 #run()
