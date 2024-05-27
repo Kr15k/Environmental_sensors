@@ -60,24 +60,25 @@ async def button_loop(data):
                 #print("lights = False")
                 await uasyncio.sleep_ms(1000)
             #print(data['ens']['rating'])
-        # turning the light off at 10pm and on at 10am (can still be toggled at all other hours)
-        hour = time.localtime()[3]
-        if hour == 22:
-            lights = False
-        elif hour == 10:
-            lights = True
         await uasyncio.sleep_ms(100)
 
 # async function changing light on or off depending on a boolean
 async def air_quality_light(data):
     global lights
     while True:
-        while lights == True:
+        # turning the light off at 10pm and on at 10am (can still be toggled at all other hours)
+        hour = time.localtime()[3]
+        if hour == 11:
+            lights = False
+        elif hour == 10:
+            lights = True
+            
+        if lights == True:
             ratings(data)
             #print("light on")
             #print(data['ens']['rating'])
             await uasyncio.sleep_ms(1000)
-        if lights == False:
+        elif lights == False:
             setColor(0, 0, 0)
             #print("light off")
             #print(data['ens']['rating'])

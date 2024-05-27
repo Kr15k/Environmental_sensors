@@ -6,6 +6,7 @@ import uasyncio
 from nanoweb import Nanoweb
 import urequests
 import gc
+import time
 
 import sensors
 from html_functions import naw_write_http_header, render_template
