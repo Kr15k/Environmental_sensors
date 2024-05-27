@@ -68,7 +68,7 @@ async def air_quality_light(data):
     while True:
         # turning the light off at 10pm and on at 10am (can still be toggled at all other hours)
         hour = time.localtime()[3]
-        if hour == 11:
+        if hour == 22:
             lights = False
         elif hour == 10:
             lights = True
